@@ -1,0 +1,49 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  # 1. Kodni tekshirish (Build)
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+
+  # 2. Serverga yuklash (Deploy step)
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy step
+        run: |
+          echo "Dastur serverga yuklanmoqda..."
+          sleep 2 # Deploy simulyatsiyasi
+          echo "Deploy yakunlandi."
+
+  # 3. Avtomatik tekshiruv (/health check)
+  health-check:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: /health check
+        run: |
+          # URL manzilini o'z serveringiz urliga almashtiring
+          URL="https://your-app-domain.com/health"
+          
+          STATUS=$(curl --write-out "%{http_code}" --silent --output /dev/null --retry 2 "$URL")
+          echo "Server status: $STATUS"
+          
+          if [ "$STATUS" -eq 200 ]; then
+            echo "Tekshiruv muvaffaqiyatli: Dastur ishlayapti!"
+            exit 0
+          else
+            echo "Xatolik: Server ishlamayapti!"
+            exit 1
+          fi
