@@ -1,0 +1,74 @@
+name: Python Security Scan (SAST & Dependency)
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install bandit pip-audit
+
+    # 1. Bandit orqali SAST skanerlash
+    - name: Run Bandit (SAST Scan)
+      run: |
+        # -r resurslarni rekursiv tekshiradi, -v verbose rejim
+        # Agarda xatolik topsa pipeline to'xtaydi (exit code beradi)
+        bandit -r . -v
+
+    # 2. pip-audit orqali zaif kutubxonalarni skanerlash
+    - name: Run pip-audit (Dependency Scan)
+      run: |
+        pip-audit -r requirements.txt
+name: Python Security Scan (SAST & Dependency)
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install bandit pip-audit
+
+    # 1. Bandit orqali SAST skanerlash
+    - name: Run Bandit (SAST Scan)
+      run: |
+        # -r resurslarni rekursiv tekshiradi, -v verbose rejim
+        # Agarda xatolik topsa pipeline to'xtaydi (exit code beradi)
+        bandit -r . -v
+
+    # 2. pip-audit orqali zaif kutubxonalarni skanerlash
+    - name: Run pip-audit (Dependency Scan)
+      run: |
+        pip-audit -r requirements.txty
