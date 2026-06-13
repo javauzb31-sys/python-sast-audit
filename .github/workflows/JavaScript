@@ -1,4 +1,0 @@
-// Express.js loyihasi uchun (server.js yoki app.js ichiga)
-app.get('/health', (req, res) => {
-    res.status(200).send('OK');
-});
