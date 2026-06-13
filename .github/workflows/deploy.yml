@@ -12,13 +12,18 @@ jobs:
       - name: SSH Remote Commands
         uses: appleboy/ssh-action@v1
         with:
+          # Serveringiz IP manzili (Secret bo'sh bo'lmasligi kerak)
           host: ${{ secrets.HOST }}
+          # Server foydalanuvchi nomi
           username: ${{ secrets.USERNAME }}
+          # SSH Private Key (---BEGIN... dan oxirigacha)
           key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT_NUMBER || 22 }}
+          # Port (odatda 22)
+          port: 22
+          # Bajariladigan skript
           script: |
-            echo "Ulanish muvaffaqiyatli!"
+            echo "--- Serverga ulanish muvaffaqiyatli ---"
             whoami
             pwd
             ls -al
-
+            echo "--- Ish tugadi ---"
