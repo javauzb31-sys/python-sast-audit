@@ -1,22 +1,24 @@
-name: Remote SSH Command
+name: Deploy via SSH
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-  build:
-    name: Build
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Execute remote SSH commands using SSH key
+      - name: SSH Remote Commands
         uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
-          port: 22
+          port: ${{ secrets.PORT_NUMBER || 22 }}
           script: |
-            echo "===CMD==="
+            echo "Ulanish muvaffaqiyatli!"
             whoami
+            pwd
             ls -al
-            echo "===END==="
 
