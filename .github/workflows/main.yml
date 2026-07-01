@@ -1,0 +1,32 @@
+name: Telegram Notification Workflow
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Ish jarayoni (bunda xatolik yuz berishi mumkin)
+      - name: Run script
+        run: echo "Vazifa bajarilmoqda..." && exit 0 # Muvaffaqiyatli bo'lsa 0, xatolik uchun 1
+
+      # Success xabari
+      - name: Send success message
+        if: success()
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{8820909230:AAH6DwXkAZBlUfBC_jxcleFaBSS5KXGaoC4}}
+          message: ✅ Workflow muvaffaqiyatli yakunlandi!
+
+      # Failure xabari
+      - name: Send failure message
+        if: failure()
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: ❌ Workflow bajarilishida xatolik yuz berdi!
